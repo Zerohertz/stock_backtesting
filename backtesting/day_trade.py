@@ -9,11 +9,11 @@ inverse_df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_p
 
 
 # 평단가 구하는 메소드(잘못된듯, wallet으로 구하면 안되고 팔기 이후로 구해야함....)
-def get_avg_price(wallet, cnt):
+def get_avg_price(tmp_avg_price, cnt):
     if(cnt>0):
-        avg_price = wallet//cnt
+        avg_price = tmp_avg_price//cnt
     else:
-        avg_price = wallet
+        avg_price = tmp_avg_price
     return avg_price
 
 # 스토캐스틱 알고리즘
@@ -64,6 +64,7 @@ def inverse_stochastic_trade(df, inverse_df, wallet):
 def rsi_trade(df, wallet, avg_price):
     result = []
     cnt = 0
+    tmp_avg_price = 0
     for i in range(800,len(df['RSI_14'])):
         # print("보유금액", wallet)
         # 40이상이면 사기
@@ -71,14 +72,15 @@ def rsi_trade(df, wallet, avg_price):
             print("사!", i, df['Open'][i])
             wallet = wallet - df['Open'][i]
             cnt=cnt+1
-
+            tmp_avg_price = tmp_avg_price + df['Open'][i]
         # 60 이상이면 팔기
         elif(df['RSI_14'][i] >=60 and cnt >= 1):
             print("팔아!", df['Open'][i])
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
-    avg_price = get_avg_price(wallet, cnt)
+            tmp_avg_price=0
+    avg_price = get_avg_price(tmp_avg_price, cnt)
     result.append(wallet)
     result.append(avg_price)
     return result
@@ -87,6 +89,7 @@ def rsi_trade(df, wallet, avg_price):
 def rsi_sell_by_avg_price(df, wallet, avg_price):
     result = []
     cnt = 0
+    tmp_avg_price = 0
     for i in range(800,len(df['RSI_14'])):
         # print("보유금액", wallet)
         # 40이상이면 사기
@@ -94,14 +97,15 @@ def rsi_sell_by_avg_price(df, wallet, avg_price):
             print("사!", df['Open'][i])
             wallet = wallet - df['Open'][i]
             cnt=cnt+1
-
+            tmp_avg_price = tmp_avg_price + df['Open'][i]
         # 60 이상이면 팔기
-        elif(cnt >= 1 and df['Open'][i] >= (get_avg_price(wallet, cnt)*1.1)):
+        elif(cnt >= 1 and df['Open'][i] >= (get_avg_price(tmp_avg_price, cnt)*1.1)):
             print("팔아!", df['Open'][i])
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
-    avg_price = get_avg_price(wallet, cnt)
+            tmp_avg_price=0
+    avg_price = get_avg_price(tmp_avg_price, cnt)
     result.append(wallet)
     result.append(avg_price)
     return result
@@ -110,21 +114,24 @@ def rsi_sell_by_avg_price(df, wallet, avg_price):
 def stochastic_sell_by_avg_price(df, wallet, avg_price):
     result = []
     cnt = 0
-    for i in range(942,len(df['STOCHk_14_3_3'])):
+    tmp_avg_price = 0
+    for i in range(320,500):
         # 20이상이면 사기
         if(df['STOCHk_14_3_3'][i] <=20):
             print("사!", df['Open'][i])
             wallet = wallet - df['Open'][i]
             cnt=cnt+1
+            tmp_avg_price = tmp_avg_price + df['Open'][i]
 
         # 평단가 기준으로 팔기
-        elif(cnt >= 1 and df['Open'][i] >= (get_avg_price(wallet, cnt)*1.1)):
+        elif(cnt >= 1 and df['Open'][i] >= (get_avg_price(tmp_avg_price, cnt)*1.1)):
             print("팔아!", df['Open'][i])
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
+            tmp_avg_price=0
 
-    avg_price = get_avg_price(wallet, cnt)
+    avg_price = get_avg_price(tmp_avg_price, cnt)
     result.append(wallet)
     result.append(avg_price)
     return result
