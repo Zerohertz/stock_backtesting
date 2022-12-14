@@ -18,16 +18,18 @@ def get_avg_price(tmp_avg_price, cnt):
 
 def get_result(wallet, df, cnt):
     result = []
+    result.append(wallet + cnt*df['Open'][len(df['STOCHk_14_3_3'])-1])
     result.append(wallet)
     result.append(df['Open'][len(df['STOCHk_14_3_3'])-1])
     result.append(cnt)
-    result.append(wallet + cnt*df['Open'][len(df['STOCHk_14_3_3'])-1])
     return result
 
+
+
 # 스토캐스틱 알고리즘
-def stochastic_trade(df, wallet):
+def stochastic_trade(df, wallet, start_index, end_index):
     cnt = 0
-    for i in range(len(df['STOCHk_14_3_3'])):
+    for i in range(start_index, end_index):
         # print("보유금액", wallet)
         # 20이상이면 사기
         if(df['STOCHk_14_3_3'][i] <=40):
@@ -45,10 +47,10 @@ def stochastic_trade(df, wallet):
     return result
 
 # 인버스 적용한 스토캐스틱 알고리즘
-def inverse_stochastic_trade(df, inverse_df, wallet):
+def inverse_stochastic_trade(df, inverse_df, wallet, start_index, end_index):
     cnt = 0
     inverse_cnt = 0
-    for i in range(len(df['STOCHk_14_3_3'])):
+    for i in range(start_index, end_index):
         # print(wallet)
         # print("보유금액", wallet)
         # 20이상이면 사기
@@ -71,11 +73,11 @@ def inverse_stochastic_trade(df, inverse_df, wallet):
     return result
 
 # rsi 구매 알고리즘
-def rsi_trade(df, wallet, avg_price):
+def rsi_trade(df, wallet, avg_price, start_index, end_index):
     result = []
     cnt = 0
     tmp_avg_price = 0
-    for i in range(len(df['RSI_14'])):
+    for i in range(start_index, end_index):
         # print("보유금액", wallet)
         # 40이상이면 사기
         if(df['RSI_14'][i] <40):
@@ -95,11 +97,11 @@ def rsi_trade(df, wallet, avg_price):
     return result
 
 # rsi 평단가 판매 알고리즘
-def rsi_sell_by_avg_price(df, wallet, avg_price):
+def rsi_sell_by_avg_price(df, wallet, avg_price, start_index, end_index):
     result = []
     cnt = 0
     tmp_avg_price = 0
-    for i in range(len(df['RSI_14'])):
+    for i in range(start_index, end_index):
         # print("보유금액", wallet)
         # 40이상이면 사기
         if(df['RSI_14'][i] <40):
@@ -119,11 +121,11 @@ def rsi_sell_by_avg_price(df, wallet, avg_price):
     return result
 
 # 스토캐스틱 알고리즘
-def stochastic_sell_by_avg_price(df, wallet, avg_price):
+def stochastic_sell_by_avg_price(df, wallet, avg_price, start_index, end_index):
     result = []
     cnt = 0
     tmp_avg_price = 0
-    for i in range(len(df['STOCHk_14_3_3'])):
+    for i in range(start_index, end_index):
         # 20이상이면 사기
         if(df['STOCHk_14_3_3'][i] <=20):
             # print("사!", df['Open'][i])
@@ -179,9 +181,15 @@ if __name__ == '__main__':
     # 평단가
     avg_price = 0
 
-    print("보유금액", "현재가격", "보유 개수", "전체 결과")
-    print(rsi_trade(df, wallet, avg_price))
-    print(stochastic_trade(df, wallet))
-    print(inverse_stochastic_trade(df, inverse_df, wallet))
-    print(rsi_sell_by_avg_price(df, wallet, avg_price))
-    print(stochastic_sell_by_avg_price(df, wallet, avg_price))
+    #시작
+    start_index = 0
+
+    #끝
+    end_index = len(df['Open'])
+
+    print("전체 결과", "보유금액", "현재가격", "보유 개수")
+    print(rsi_trade(df, wallet, avg_price, start_index, end_index))
+    print(stochastic_trade(df, wallet, start_index, end_index))
+    print(inverse_stochastic_trade(df, inverse_df, wallet, start_index, end_index))
+    print(rsi_sell_by_avg_price(df, wallet, avg_price, start_index, end_index))
+    print(stochastic_sell_by_avg_price(df, wallet, avg_price, start_index, end_index))
