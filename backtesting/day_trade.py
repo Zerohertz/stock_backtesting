@@ -14,6 +14,10 @@ def get_result(wallet, df, cnt):
     result.append(cnt)
     return result
 
+# 실현손익
+def get_revenue(tmp_sum_price, sell_price, cnt):
+    return (tmp_sum_price - (sell_price * cnt))
+
 # 스토캐스틱 알고리즘
 def stochastic_trade(df, wallet, start_index, end_index):
     print("스토캐스틱 알고리즘")
