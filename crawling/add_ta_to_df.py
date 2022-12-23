@@ -8,24 +8,6 @@ if __name__ == '__main__':
     df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\data\{}.csv".format(file_name), sep=",")
     # inverse_df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\data\SQQQ_1d_2019-01-14_2022-12-12.csv", sep=",")
 
-
-    # # Create your own Custom Strategy
-    # DayStochasticStrategy = ta.Strategy(
-    #     name="stochastic",
-    #     description="stochastic",
-    #     ta=[
-    #         {"kind": "stoch"},
-    #     ]
-    # )
-
-    # DayRsiStrategy = ta.Strategy(
-    #     name="rsi",
-    #     description="rsi",
-    #     ta=[
-    #         {"kind": "rsi"},
-    #     ]
-    # )
-
     MyStrategy = ta.Strategy(
         name="rsi",
         description="rsi",
