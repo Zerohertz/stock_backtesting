@@ -100,7 +100,7 @@ def repeat_period_test():
     period = 200
     file_name = "ta_{}_1d_2012-01-03_2022-12-22".format(stock)
     df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\ta_data\{}.csv".format(file_name), sep=",")
-    print("전체 결과", "보유금액", "현재가격", "보유 개수")
+    print("전체 결과", "보유금액", "현재가격", "보유 개수", "자본금")
     for i in range(0,len(df['Open']),period):
         if(i>len(df['Open'])-period):
             break

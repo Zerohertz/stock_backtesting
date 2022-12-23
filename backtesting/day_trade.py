@@ -93,6 +93,11 @@ def rsi_trade(df, wallet, start_index, end_index):
     cnt = 0
     capital = 0
     tmp_sum_price = 0
+
+    # 사는 횟수
+    total_buy_cnt = 0
+    # 파는 횟수
+    total_sell_cnt = 0
     for i in range(start_index, end_index):
         # 40이상이면 사기
         if(df['RSI_14'][i] < 40):
@@ -100,13 +105,17 @@ def rsi_trade(df, wallet, start_index, end_index):
             wallet = wallet - df['Open'][i] * buy_cnt
             capital = get_capital(capital, wallet)
             cnt = cnt + buy_cnt
+            total_buy_cnt = total_buy_cnt + 1
             tmp_sum_price = tmp_sum_price + df['Open'][i]
         # 60 이상이면 팔기
         elif(df['RSI_14'][i] >=60 and cnt >= 1):
+            total_sell_cnt = total_sell_cnt + 1
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
             tmp_sum_price=0
+    print("사는 횟수", "파는 횟수")
+    print(total_buy_cnt, total_sell_cnt)
     result = get_result(wallet, df, cnt, capital)
     return result
 
