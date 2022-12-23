@@ -1,9 +1,11 @@
 import yfinance as yf
 
-start_date = '2019-01-14'
-end_date = '2022-12-12'
+stocks = ["QQQ", "QLD", "TQQQ", "PSQ", "SQQQ", "DIA", "ARKK", "IVV", "SSO", "UPRO", "FNGU", "BULZ"]
+
+start_date = '2012-01-03'
+end_date = '2022-12-22'
 interval_time = "1d"
-company = "SQQQ"
+company = "BULZ"
 
 # 불러오기
 data = yf.download(tickers = company, interval=interval_time, start=start_date, end=end_date)
