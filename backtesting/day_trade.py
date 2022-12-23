@@ -1,5 +1,7 @@
 import pandas as pd
 
+weight = 1.1
+
 # 평단가 구하는 메소드
 def get_avg_price(tmp_sum_price, cnt):
     if(cnt>0):
@@ -25,6 +27,7 @@ def get_revenue(tmp_sum_price, sell_price, cnt):
 
 # 존버 알고리즘
 def just_stay(df, wallet, start_index, end_index):
+    print("존버 알고리즘")
     wallet = wallet - df['Open'][start_index]
     wallet = wallet + df['Open'][end_index]
     return [get_round(wallet), get_round(wallet), get_round(df['Open'][end_index]), 0]
@@ -136,7 +139,7 @@ def macd_3_days_trade(df, wallet, start_index, end_index):
 
 # rsi 평단가 판매 알고리즘
 def rsi_sell_by_avg_price(df, wallet, start_index, end_index):
-    print("rsi 알고리즘, 판매가중치")
+    print("RSI 알고리즘, 판매가중치")
     result = []
     cnt = 0
     tmp_sum_price = 0
@@ -147,8 +150,8 @@ def rsi_sell_by_avg_price(df, wallet, start_index, end_index):
             wallet = wallet - df['Open'][i]
             cnt=cnt+1
             tmp_sum_price = tmp_sum_price + df['Open'][i]
-        # 60 이상이면 팔기
-        elif(cnt >= 1 and (df['Open'][i] >= (get_avg_price(tmp_sum_price, cnt)*1.1) )):
+        # 가중치 만큼 오르면 다팔기!
+        elif(cnt >= 1 and (df['Open'][i] >= (get_avg_price(tmp_sum_price, cnt)*weight) )):
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
@@ -170,7 +173,7 @@ def stochastic_sell_by_avg_price(df, wallet, start_index, end_index):
             tmp_sum_price = tmp_sum_price + df['Open'][i]
 
         # 평단가 기준으로 팔기
-        elif(cnt >= 1 and df['Open'][i] >= (get_avg_price(tmp_sum_price, cnt)*1.1)):
+        elif(cnt >= 1 and df['Open'][i] >= (get_avg_price(tmp_sum_price, cnt)*weight)):
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
@@ -189,7 +192,7 @@ def laor_algorithm(df, wallet, start_index, end_index):
         cnt=cnt+1
         tmp_sum_price = tmp_sum_price + df['Open'][i]
 
-        if(cnt >= 1 and df['Open'][i] >= (get_avg_price(tmp_sum_price, cnt)*1.1)):
+        if(cnt >= 1 and df['Open'][i] >= (get_avg_price(tmp_sum_price, cnt)*weight)):
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
