@@ -8,11 +8,14 @@ def get_avg_price(tmp_sum_price, cnt):
         avg_price = tmp_sum_price
     return avg_price
 
+def get_round(num):
+    return round(num, 2)
+
 def get_result(wallet, df, cnt):
     result = []
-    result.append(wallet + cnt*df['Open'][len(df['STOCHk_14_3_3'])-1])
-    result.append(wallet)
-    result.append(df['Open'][len(df['STOCHk_14_3_3'])-1])
+    result.append(get_round(wallet + cnt*df['Open'][len(df['STOCHk_14_3_3'])-1]))
+    result.append(get_round(wallet))
+    result.append(get_round(df['Open'][len(df['STOCHk_14_3_3'])-1]))
     result.append(cnt)
     return result
 
@@ -24,7 +27,7 @@ def get_revenue(tmp_sum_price, sell_price, cnt):
 def just_stay(df, wallet, start_index, end_index):
     wallet = wallet - df['Open'][start_index]
     wallet = wallet + df['Open'][end_index]
-    return [wallet, wallet, df['Open'][end_index], 0]
+    return [get_round(wallet), get_round(wallet), get_round(df['Open'][end_index]), 0]
 
 # 스토캐스틱 알고리즘
 def stochastic_trade(df, wallet, start_index, end_index):
