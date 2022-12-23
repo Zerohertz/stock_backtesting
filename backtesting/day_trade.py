@@ -30,7 +30,8 @@ def get_revenue(tmp_sum_price, sell_price, cnt):
     return (sell_price * cnt - tmp_sum_price)
 
 def get_buy_cnt(price):
-    surplus_cash = 400
+    surplus_cash = 100
+    # print(surplus_cash//price)
     return surplus_cash//price
 
 # 존버 알고리즘
@@ -94,7 +95,7 @@ def rsi_trade(df, wallet, start_index, end_index):
     tmp_sum_price = 0
     for i in range(start_index, end_index):
         # 40이상이면 사기
-        if(df['RSI_14'][i] <40):
+        if(df['RSI_14'][i] < 40):
             buy_cnt = get_buy_cnt(df['Open'][i])
             wallet = wallet - df['Open'][i] * buy_cnt
             capital = get_capital(capital, wallet)
@@ -102,6 +103,30 @@ def rsi_trade(df, wallet, start_index, end_index):
             tmp_sum_price = tmp_sum_price + df['Open'][i]
         # 60 이상이면 팔기
         elif(df['RSI_14'][i] >=60 and cnt >= 1):
+            # 가지고 있는 모든 개수 다팔기
+            wallet = wallet + (df['Open'][i] * cnt)
+            cnt=0
+            tmp_sum_price=0
+    result = get_result(wallet, df, cnt, capital)
+    return result
+
+# mfi 구매 알고리즘
+def mfi_trade(df, wallet, start_index, end_index):
+    print("MFI 알고리즘")
+    result = []
+    cnt = 0
+    capital = 0
+    tmp_sum_price = 0
+    for i in range(start_index, end_index):
+        # 40이상이면 사기
+        if(df['MFI_14'][i] < 40):
+            buy_cnt = get_buy_cnt(df['Open'][i])
+            wallet = wallet - df['Open'][i] * buy_cnt
+            capital = get_capital(capital, wallet)
+            cnt = cnt + buy_cnt
+            tmp_sum_price = tmp_sum_price + df['Open'][i]
+        # 60 이상이면 팔기
+        elif(df['MFI_14'][i] >=60 and cnt >= 1):
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
