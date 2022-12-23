@@ -20,6 +20,12 @@ def get_result(wallet, df, cnt):
 def get_revenue(tmp_sum_price, sell_price, cnt):
     return (sell_price * cnt - tmp_sum_price)
 
+# 존버 알고리즘
+def just_stay(df, wallet, start_index, end_index):
+    wallet = wallet - df['Open'][start_index]
+    wallet = wallet + df['Open'][end_index]
+    return [wallet, wallet, df['Open'][end_index], 0]
+
 # 스토캐스틱 알고리즘
 def stochastic_trade(df, wallet, start_index, end_index):
     print("스토캐스틱 알고리즘")
