@@ -25,16 +25,13 @@ def stochastic_trade(df, wallet, start_index, end_index):
     print("스토캐스틱 알고리즘")
     cnt = 0
     for i in range(start_index, end_index):
-        # print("보유금액", wallet)
-        # 20이상이면 사기
+        # 30 이상이면 사기
         if(df['STOCHk_14_3_3'][i] <=30):
-            # print("사!", df['Open'][i])
             wallet = wallet - df['Open'][i]
             cnt=cnt+1
 
         # 70 이상이면 팔기
         elif(df['STOCHk_14_3_3'][i] >=70 and cnt >= 1):
-            # print("팔아!", df['Open'][i])
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
@@ -47,8 +44,6 @@ def inverse_stochastic_trade(df, inverse_df, wallet, start_index, end_index):
     cnt = 0
     inverse_cnt = 0
     for i in range(start_index, end_index):
-        # print(wallet)
-        # print("보유금액", wallet)
         # 20이상이면 사기
         if(df['STOCHk_14_3_3'][i] <=20 and inverse_cnt >= 0):
             # print("사!", df['Open'][i])
@@ -59,7 +54,6 @@ def inverse_stochastic_trade(df, inverse_df, wallet, start_index, end_index):
 
         # 70 이상이면 팔기
         elif(df['STOCHk_14_3_3'][i] >=70 and cnt >= 0):
-            # print("팔아!", df['Open'][i])
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             wallet = wallet - inverse_df['Open'][i]
@@ -75,21 +69,17 @@ def rsi_trade(df, wallet, start_index, end_index):
     cnt = 0
     tmp_sum_price = 0
     for i in range(start_index, end_index):
-        # print("보유금액", wallet)
         # 40이상이면 사기
         if(df['RSI_14'][i] <40):
-            # print("사!", i, df['Open'][i])
             wallet = wallet - df['Open'][i]
             cnt=cnt+1
             tmp_sum_price = tmp_sum_price + df['Open'][i]
         # 60 이상이면 팔기
         elif(df['RSI_14'][i] >=60 and cnt >= 1):
-            # print("팔아!", df['Open'][i])
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
             tmp_sum_price=0
-    avg_price = get_avg_price(tmp_sum_price, cnt)
     result = get_result(wallet, df, cnt)
     return result
 
@@ -100,18 +90,13 @@ def macd_trade(df, wallet, start_index, end_index):
     cnt = 0
     tmp_sum_price = 0
     for i in range(start_index, end_index):
-
         # 양수 돌파 매수
         if(df['MACD_12_26_9'][i-1] < 0 and df['MACD_12_26_9'][i] > 0):
-            print(df['Date'][i])
-            print("사!", i, df['Open'][i])
             wallet = wallet - df['Open'][i]
             cnt=cnt+1
             tmp_sum_price = tmp_sum_price + df['Open'][i]
         # 음수 돌파 매도
         elif(df['MACD_12_26_9'][i-1] > 0 and df['MACD_12_26_9'][i] < 0):
-            print(df['Date'][i])
-            print("팔아!", df['Open'][i])
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
@@ -126,25 +111,19 @@ def macd_3_days_trade(df, wallet, start_index, end_index):
     cnt = 0
     tmp_sum_price = 0
     for i in range(start_index, end_index):
-
         # 양수 돌파 매수
         if(df['MACD_12_26_9'][i-1] < 0 and df['MACD_12_26_9'][i] > 0):
-            print(df['Date'][i])
-            print("사!", i, df['Open'][i])
             wallet = wallet - df['Open'][i]
             cnt=cnt+1
             tmp_sum_price = tmp_sum_price + df['Open'][i]
         # 음수 돌파 매도
         elif(df['MACD_12_26_9'][i-1] > 0 and df['MACD_12_26_9'][i] < 0):
-            print(df['Date'][i])
-            print("팔아!", df['Open'][i])
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
             tmp_sum_price=0
     result = get_result(wallet, df, cnt)
     return result
-
 
 # rsi 평단가 판매 알고리즘
 def rsi_sell_by_avg_price(df, wallet, start_index, end_index):
@@ -153,7 +132,6 @@ def rsi_sell_by_avg_price(df, wallet, start_index, end_index):
     cnt = 0
     tmp_sum_price = 0
     for i in range(start_index, end_index):
-        # print("보유금액", wallet)
         # 40이상이면 사기
         if(df['RSI_14'][i] <40):
             # print("사!", df['Open'][i])
@@ -162,7 +140,6 @@ def rsi_sell_by_avg_price(df, wallet, start_index, end_index):
             tmp_sum_price = tmp_sum_price + df['Open'][i]
         # 60 이상이면 팔기
         elif(cnt >= 1 and (df['Open'][i] >= (get_avg_price(tmp_sum_price, cnt)*1.1) )):
-            # print("팔아!", df['Open'][i])
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
@@ -179,14 +156,12 @@ def stochastic_sell_by_avg_price(df, wallet, start_index, end_index):
     for i in range(start_index, end_index):
         # 20이상이면 사기
         if(df['STOCHk_14_3_3'][i] <=20):
-            # print("사!", df['Open'][i])
             wallet = wallet - df['Open'][i]
             cnt=cnt+1
             tmp_sum_price = tmp_sum_price + df['Open'][i]
 
         # 평단가 기준으로 팔기
         elif(cnt >= 1 and df['Open'][i] >= (get_avg_price(tmp_sum_price, cnt)*1.1)):
-            # print("팔아!", df['Open'][i])
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
@@ -206,11 +181,6 @@ def laor_algorithm(df, wallet, start_index, end_index):
         tmp_sum_price = tmp_sum_price + df['Open'][i]
 
         if(cnt >= 1 and df['Open'][i] >= (get_avg_price(tmp_sum_price, cnt)*1.1)):
-            # print(i)
-            # print(tmp_sum_price)
-            # print(df['Open'][i])
-            # print(cnt)
-            # print(get_revenue(tmp_sum_price, df['Open'][i], cnt))
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
