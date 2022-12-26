@@ -10,7 +10,7 @@ Building a Data Platform for Back-Testing with U.S. Stock Data
 
 ### etc
 - yfinance에만 1분 단위 데이터를 가져올 수 있어 yfinance 사용
-- dow jones : DIA
+- dow jones : DIA, DDM, UDOW
 - QQQ : QQQ, QLD, TQQQ
 - inverse QQQ : PSQ , , SQQQ
 - S&P500 : IVV, SSO, UPRO
