@@ -16,11 +16,11 @@ def get_round(num):
 def get_capital(capital, wallet):
     return min(capital, wallet)
 
-def get_result(wallet, df, cnt, capital):
+def get_result(wallet, df, cnt, capital, end_index):
     result = []
-    result.append(get_round(wallet + cnt*df['Open'][len(df['STOCHk_14_3_3'])-1]))
+    result.append(get_round(wallet + cnt*df['Open'][end_index-1]))
     result.append(get_round(wallet))
-    result.append(get_round(df['Open'][len(df['STOCHk_14_3_3'])-1]))
+    result.append(get_round(df['Open'][end_index-1]))
     result.append(cnt)
     result.append(get_round(capital))
     return result
@@ -30,7 +30,7 @@ def get_revenue(tmp_sum_price, sell_price, cnt):
     return (sell_price * cnt - tmp_sum_price)
 
 def get_buy_cnt(price):
-    surplus_cash = 100
+    surplus_cash = 400
     # print(surplus_cash//price)
     return surplus_cash//price
 
@@ -99,7 +99,7 @@ def rsi_trade(df, wallet, start_index, end_index):
     # 파는 횟수
     total_sell_cnt = 0
     for i in range(start_index, end_index):
-        # 40이상이면 사기
+        # 40이하면 사기
         if(df['RSI_14'][i] < 40):
             buy_cnt = get_buy_cnt(df['Open'][i])
             wallet = wallet - df['Open'][i] * buy_cnt
@@ -114,9 +114,9 @@ def rsi_trade(df, wallet, start_index, end_index):
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
             tmp_sum_price=0
-    print("사는 횟수", "파는 횟수")
-    print(total_buy_cnt, total_sell_cnt)
-    result = get_result(wallet, df, cnt, capital)
+    # print("사는 횟수", "파는 횟수")
+    # print(total_buy_cnt, total_sell_cnt)
+    result = get_result(wallet, df, cnt, capital, end_index)
     return result
 
 # mfi 구매 알고리즘
