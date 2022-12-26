@@ -59,7 +59,7 @@ def stochastic_trade(df, wallet, start_index, end_index):
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
-    result = get_result(wallet, df, cnt, capital)
+    result = get_result(wallet, df, cnt, capital, end_index)
     return result
 
 # 인버스 적용한 스토캐스틱 알고리즘 - 일단 보류
@@ -140,7 +140,7 @@ def mfi_trade(df, wallet, start_index, end_index):
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
             tmp_sum_price=0
-    result = get_result(wallet, df, cnt, capital)
+    result = get_result(wallet, df, cnt, capital, end_index)
     return result
 
 # MACD 알고리즘 양수 돌파 매수, 음수 돌파 매도,
@@ -164,7 +164,7 @@ def macd_trade(df, wallet, start_index, end_index):
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
             tmp_sum_price=0
-    result = get_result(wallet, df, cnt, capital)
+    result = get_result(wallet, df, cnt, capital, end_index)
     return result
 
 # MACD 3일 변동성 알고리즘- 개선해야함
@@ -210,7 +210,7 @@ def rsi_sell_by_avg_price(df, wallet, start_index, end_index):
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
             tmp_sum_price=0
-    result = get_result(wallet, df, cnt, capital)
+    result = get_result(wallet, df, cnt, capital, end_index)
     return result
 
 # 스토캐스틱 알고리즘 평단가 판매가중치
@@ -235,7 +235,7 @@ def stochastic_sell_by_avg_price(df, wallet, start_index, end_index):
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
             tmp_sum_price=0
-    result = get_result(wallet, df, cnt, capital)
+    result = get_result(wallet, df, cnt, capital, end_index)
     return result
 
 # 라오어 알고리즘, 완전히 같지 않고 대략적으로 비슷함
@@ -256,6 +256,6 @@ def laor_algorithm(df, wallet, start_index, end_index):
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
             tmp_sum_price=0
-    result = get_result(wallet, df, cnt, capital)
+    result = get_result(wallet, df, cnt, capital, end_index)
 
     return result
