@@ -3,7 +3,7 @@
 
 ### 과정
 1. yfinance 라이브러리를 활용하여 종목코드의 주가 데이터를 csv로 수집 (interval 1min, 5min, 1day etc)
-2. pandas 데이터 프레임으로 csv 파일 불러와서 최적의 알고리즘(RSI, stochastic etc)을 찾기 위해 다양한 통계적 지표 테스트
+2. pandas 데이터 프레임으로 csv 파일 불러와서 최적의 알고리즘을 찾기 위해 다양한 통계적 지표 (RSI, stochastic etc) 테스트
 3. 전체 과정 자동화
 
 ### 참고자료
