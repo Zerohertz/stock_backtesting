@@ -1,15 +1,15 @@
-### Project
-Building a Data Platform for Back-Testing with U.S. Stock Data
+### 프로젝트
+미국 주식 데이터를 활용하여 다양한 통계적 지표를 백테스팅할 수 있는 프로젝트
 
-### Scenario
-1. extract famous etf(qqq, qld, tqqq, oil fund) and stock data from investing.com (interval 1min, 5min, 1day etc)
-2. load data to csv file
-3. import csv file to pandas dataframe
-4. use several stock methods(RSI, stochastic etc) to find best algorithm
-5. automize all processes
+### 과정
+1. yfinance 라이브러리를 활용하여 종목코드의 주가 데이터를 csv로 수집 (interval 1min, 5min, 1day etc)
+2. pandas 데이터 프레임으로 csv 파일 불러와서 최적의 알고리즘(RSI, stochastic etc)을 찾기 위해 다양한 통계적 지표 테스트
+3. 전체 과정 자동화
 
-### etc
+### 참고자료
 - yfinance에만 1분 단위 데이터를 가져올 수 있어 yfinance 사용
+
+#### 종목코드
 - dow jones : DIA, DDM, UDOW
 - QQQ : QQQ, QLD, TQQQ
 - inverse QQQ : PSQ , , SQQQ
