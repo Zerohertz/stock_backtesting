@@ -1,13 +1,12 @@
 import pandas as pd
 from backtesting import day_trade
+from crawling import crawling, technical_analysis
 import common
 
 stocks = common.stocks
 wallet = 0
 # 평단가
 avg_price = 0
-
-
 
 # 최고의 장 2020년 3월 25일 ~ 2021년 12월 29일, 2071 ~ 2516 가만히 있어도 약 QQQ 기준215불 수익, ARK는 1357~1802
 # 최악의 장 2022년 1월 4일 ~ 2022년 12월 23일, 2520 ~ 2700, ARK는 1820~2049
@@ -105,21 +104,34 @@ def repeat_period_test(period, file_name):
         # print(day_trade.macd_trade(df, wallet, start_index, end_index))
 
 # print(make_all_result())
+if __name__ == '__main__':
 
-stock = "UPRO"
-period = 190
-file_name = "ta_{}_1d_2012-01-03_2023-01-05".format(stock)
-df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\ta_data\{}.csv".format(file_name), sep=",")
+    # 수집할 데이터 정의
+    stock = "UPRO"
+    start_date = '2012-01-03'
+    end_date = '2023-05-04'
+    interval_time = "1d"
+    company = "UPRO"
+    # period = 190
+    stock_code = "{0}_{1}_{2}_{3}".format(company, interval_time, start_date, end_date)
 
-# print("파일명", file_name)
-# print("최종 결과,", "현재 보유금액,", "현재 가격,", "보유 개수", "자본금")
-# print(day_trade.just_stay(df, wallet, start_index, end_index))
-print(day_trade.rsi_trade(df, wallet, worst_season[0], worst_season[1]))
-# print(day_trade.rsi_sell_by_avg_price(df, wallet, start_index, end_index))
-# print(day_trade.stochastic_trade(df, wallet, start_index, end_index))
-# print(day_trade.stochastic_sell_by_avg_price(df, wallet, start_index, end_index))
-# print(day_trade.laor_algorithm(df, wallet, start_index, end_index))
-# print(day_trade.macd_trade(df, wallet, start_index, end_index))
+    # 데이터 수집
+    crawling.crawl_stock_data(start_date, end_date, company, interval_time="1d")
+
+    # 통계적 지표 추가
+    technical_analysis.add_ta_to_df(stock_code)
+
+    # df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\ta_data\{}.csv".format(file_name), sep=",")
+
+    # print("파일명", file_name)
+    # print("최종 결과,", "현재 보유금액,", "현재 가격,", "보유 개수", "자본금")
+    # print(day_trade.just_stay(df, wallet, start_index, end_index))
+    # print(day_trade.rsi_trade(df, wallet, worst_season[0], worst_season[1]))
+    # print(day_trade.rsi_sell_by_avg_price(df, wallet, start_index, end_index))
+    # print(day_trade.stochastic_trade(df, wallet, start_index, end_index))
+    # print(day_trade.stochastic_sell_by_avg_price(df, wallet, start_index, end_index))
+    # print(day_trade.laor_algorithm(df, wallet, start_index, end_index))
+    # print(day_trade.macd_trade(df, wallet, start_index, end_index))
 
 
-# repeat_period_test(period, file_name)
+    # repeat_period_test(period, file_name)
