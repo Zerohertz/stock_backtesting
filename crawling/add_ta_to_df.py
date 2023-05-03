@@ -4,8 +4,6 @@ import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-
-
 import common
 
 def add_ta_to_all_df():
@@ -34,7 +32,7 @@ def add_ta_to_all_df():
 
 if __name__ == '__main__':
     stock = "UPRO"
-    file_name = "{}_1d_2012-01-03_2023-01-05".format(stock)
+    file_name = "{}_1d_2012-01-03_2023-05-04".format(stock)
     # Load data
     df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\data\{}.csv".format(file_name), sep=",")
     # inverse_df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\data\SQQQ_1d_2019-01-14_2022-12-12.csv", sep=",")

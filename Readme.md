@@ -6,12 +6,26 @@
 2. pandas 데이터 프레임으로 csv 파일 불러와서 최적의 알고리즘을 찾기 위해 다양한 통계적 지표 (RSI, stochastic etc) 테스트
 3. 전체 과정 자동화
 
-### 참고자료
-- yfinance에만 1분 단위 데이터를 가져올 수 있어 yfinance 사용
-
 #### 종목코드
 - dow jones : DIA, DDM, UDOW
 - QQQ : QQQ, QLD, TQQQ
 - inverse QQQ : PSQ , , SQQQ
 - S&P500 : IVV, SSO, UPRO
 - ARKK
+
+#### 폴더 구조 설명
+- backtesting 트레이딩 방식 구현 폴더
+- crawling 미국 주가 데이터 수집 폴더
+- data 수집 원본 데이터
+- ta_data 기술적 지표 추가한 데이터
+- commmon 공통으로 사용하는 것들 파일
+- main 실행하는 파일
+
+#### 데이터 크롤링 라이브러리
+- [yfinance python guide](https://analyzingalpha.com/yfinance-python)
+- yfinance에만 1분 단위 데이터를 가져올 수 있어서 yfinance 사용
+- [investpy](https://github.com/alvarobartt/investpy)
+- [financedatareader](https://github.com/financedata-org/FinanceDataReader)
+
+#### 통계적 분석 pandas 라이브러리
+- [pandas-ta](https://github.com/twopirllc/pandas-ta)
