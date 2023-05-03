@@ -1,6 +1,15 @@
 import pandas as pd
 
+# 가중치
 weight = 1.1
+
+def get_index_by_date(df, date):
+    # 주어진 날짜에 해당하는 인덱스 반환
+    for i in range(len(df['Date'])):
+        if(df['Date'][i]==date):
+            return i
+    return len(df['Date'])-1
+
 
 # 평단가 구하는 메소드
 def get_avg_price(tmp_sum_price, cnt):
@@ -34,16 +43,21 @@ def get_buy_cnt(price):
     # print(surplus_cash//price)
     return surplus_cash//price
 
-# 존버 알고리즘
-def just_stay(df, wallet, start_index, end_index):
+# 존버 알고리즘, 수정 필요
+def just_stay(df, wallet, start_date, end_date):
     print("존버 알고리즘")
+    start_index = get_index_by_date(df, start_date)
+    end_index = get_index_by_date(df, end_date)
+
     wallet = wallet - df['Open'][start_index]
     wallet = wallet + df['Open'][end_index]
     return [get_round(wallet), get_round(wallet), get_round(df['Open'][end_index]), 0]
 
 # 스토캐스틱 알고리즘
-def stochastic_trade(df, wallet, start_index, end_index):
+def stochastic_trade(df, wallet, start_date, end_date):
     print("스토캐스틱 알고리즘")
+    start_index = get_index_by_date(df, start_date)
+    end_index = get_index_by_date(df, end_date)
     cnt = 0
     capital = 0
     for i in range(start_index, end_index):
@@ -87,8 +101,10 @@ def stochastic_trade(df, wallet, start_index, end_index):
 #     return result
 
 # rsi 구매 알고리즘
-def rsi_trade(df, wallet, start_index, end_index):
+def rsi_trade(df, wallet, start_date, end_date):
     print("RSI 알고리즘")
+    start_index = get_index_by_date(df, start_date)
+    end_index = get_index_by_date(df, end_date)
     result = []
     cnt = 0
     capital = 0
@@ -109,20 +125,22 @@ def rsi_trade(df, wallet, start_index, end_index):
             tmp_sum_price = tmp_sum_price + df['Open'][i]
         # 60 이상이면 팔기
         elif(df['RSI_14'][i] >=60 and cnt >= 1):
-            print(df['Date'][i])
+            # print(df['Date'][i])
             total_sell_cnt = total_sell_cnt + 1
             # 가지고 있는 모든 개수 다팔기
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
             tmp_sum_price=0
-    print("사는 횟수", "파는 횟수")
-    print(total_buy_cnt, total_sell_cnt)
+    # print("사는 횟수", "파는 횟수")
+    # print(total_buy_cnt, total_sell_cnt)
     result = get_result(wallet, df, cnt, capital, end_index)
     return result
 
 # mfi 구매 알고리즘
-def mfi_trade(df, wallet, start_index, end_index):
+def mfi_trade(df, wallet, start_date, end_date):
     print("MFI 알고리즘")
+    start_index = get_index_by_date(df, start_date)
+    end_index = get_index_by_date(df, end_date)
     result = []
     cnt = 0
     capital = 0
@@ -145,8 +163,10 @@ def mfi_trade(df, wallet, start_index, end_index):
     return result
 
 # MACD 알고리즘 양수 돌파 매수, 음수 돌파 매도,
-def macd_trade(df, wallet, start_index, end_index):
+def macd_trade(df, wallet, start_date, end_date):
     print("MACD 알고리즘")
+    start_index = get_index_by_date(df, start_date)
+    end_index = get_index_by_date(df, end_date)
     result = []
     cnt = 0
     capital = 0
@@ -191,8 +211,10 @@ def macd_trade(df, wallet, start_index, end_index):
 #     return result
 
 # rsi 평단가 판매 알고리즘
-def rsi_sell_by_avg_price(df, wallet, start_index, end_index):
+def rsi_sell_by_avg_price(df, wallet, start_date, end_date):
     print("RSI 알고리즘, 판매가중치")
+    start_index = get_index_by_date(df, start_date)
+    end_index = get_index_by_date(df, end_date)
     result = []
     cnt = 0
     capital = 0
@@ -215,8 +237,10 @@ def rsi_sell_by_avg_price(df, wallet, start_index, end_index):
     return result
 
 # 스토캐스틱 알고리즘 평단가 판매가중치
-def stochastic_sell_by_avg_price(df, wallet, start_index, end_index):
+def stochastic_sell_by_avg_price(df, wallet, start_date, end_date):
     print("스토캐스틱 알고리즘, 판매가중치")
+    start_index = get_index_by_date(df, start_date)
+    end_index = get_index_by_date(df, end_date)
     result = []
     cnt = 0
     capital = 0
@@ -240,8 +264,10 @@ def stochastic_sell_by_avg_price(df, wallet, start_index, end_index):
     return result
 
 # 라오어 알고리즘, 완전히 같지 않고 대략적으로 비슷함
-def laor_algorithm(df, wallet, start_index, end_index):
+def laor_algorithm(df, wallet, start_date, end_date):
     print("라오어 알고리즘 결과")
+    start_index = get_index_by_date(df, start_date)
+    end_index = get_index_by_date(df, end_date)
     result = []
     cnt = 0
     capital = 0
