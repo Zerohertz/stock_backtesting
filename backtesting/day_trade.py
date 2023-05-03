@@ -38,13 +38,13 @@ def get_result(wallet, df, cnt, capital, end_index):
 def get_revenue(tmp_sum_price, sell_price, cnt):
     return (sell_price * cnt - tmp_sum_price)
 
-def get_buy_cnt(price):
-    surplus_cash = 200
+def get_buy_cnt(price, surplus_cash):
+    # surplus_cash = 200
     # print(surplus_cash//price)
     return surplus_cash//price
 
 # 존버 알고리즘, 수정 필요
-def just_stay(df, wallet, start_date, end_date):
+def just_stay(df, wallet, surplus_cash, start_date, end_date):
     print("존버 알고리즘")
     start_index = get_index_by_date(df, start_date)
     end_index = get_index_by_date(df, end_date)
@@ -54,7 +54,7 @@ def just_stay(df, wallet, start_date, end_date):
     return [get_round(wallet), get_round(wallet), get_round(df['Open'][end_index]), 0]
 
 # 스토캐스틱 알고리즘
-def stochastic_trade(df, wallet, start_date, end_date):
+def stochastic_trade(df, wallet, surplus_cash, start_date, end_date):
     print("스토캐스틱 알고리즘")
     start_index = get_index_by_date(df, start_date)
     end_index = get_index_by_date(df, end_date)
@@ -63,7 +63,7 @@ def stochastic_trade(df, wallet, start_date, end_date):
     for i in range(start_index, end_index):
         # 30 이상이면 사기
         if(df['STOCHk_14_3_3'][i] <=30):
-            buy_cnt = get_buy_cnt(df['Open'][i])
+            buy_cnt = get_buy_cnt(df['Open'][i], surplus_cash)
             wallet = wallet - df['Open'][i] * buy_cnt
             capital = get_capital(capital, wallet)
             cnt = cnt + buy_cnt
@@ -101,7 +101,7 @@ def stochastic_trade(df, wallet, start_date, end_date):
 #     return result
 
 # rsi 구매 알고리즘
-def rsi_trade(df, wallet, start_date, end_date):
+def rsi_trade(df, wallet, surplus_cash, start_date, end_date):
     print("RSI 알고리즘")
     start_index = get_index_by_date(df, start_date)
     end_index = get_index_by_date(df, end_date)
@@ -117,7 +117,7 @@ def rsi_trade(df, wallet, start_date, end_date):
     for i in range(start_index, end_index):
         # 40이하면 사기
         if(df['RSI_14'][i] < 50):
-            buy_cnt = get_buy_cnt(df['Open'][i])
+            buy_cnt = get_buy_cnt(df['Open'][i], surplus_cash)
             wallet = wallet - df['Open'][i] * buy_cnt
             capital = get_capital(capital, wallet)
             cnt = cnt + buy_cnt
@@ -137,7 +137,7 @@ def rsi_trade(df, wallet, start_date, end_date):
     return result
 
 # mfi 구매 알고리즘
-def mfi_trade(df, wallet, start_date, end_date):
+def mfi_trade(df, wallet, surplus_cash, start_date, end_date):
     print("MFI 알고리즘")
     start_index = get_index_by_date(df, start_date)
     end_index = get_index_by_date(df, end_date)
@@ -148,7 +148,7 @@ def mfi_trade(df, wallet, start_date, end_date):
     for i in range(start_index, end_index):
         # 40이상이면 사기
         if(df['MFI_14'][i] < 40):
-            buy_cnt = get_buy_cnt(df['Open'][i])
+            buy_cnt = get_buy_cnt(df['Open'][i], surplus_cash)
             wallet = wallet - df['Open'][i] * buy_cnt
             capital = get_capital(capital, wallet)
             cnt = cnt + buy_cnt
@@ -163,7 +163,7 @@ def mfi_trade(df, wallet, start_date, end_date):
     return result
 
 # MACD 알고리즘 양수 돌파 매수, 음수 돌파 매도,
-def macd_trade(df, wallet, start_date, end_date):
+def macd_trade(df, wallet, surplus_cash, start_date, end_date):
     print("MACD 알고리즘")
     start_index = get_index_by_date(df, start_date)
     end_index = get_index_by_date(df, end_date)
@@ -174,7 +174,7 @@ def macd_trade(df, wallet, start_date, end_date):
     for i in range(start_index, end_index):
         # 양수 돌파 매수
         if(df['MACD_12_26_9'][i-1] < 0 and df['MACD_12_26_9'][i] > 0):
-            buy_cnt = get_buy_cnt(df['Open'][i])
+            buy_cnt = get_buy_cnt(df['Open'][i], surplus_cash)
             wallet = wallet - df['Open'][i] * buy_cnt
             capital = get_capital(capital, wallet)
             cnt = cnt + buy_cnt
@@ -211,7 +211,7 @@ def macd_trade(df, wallet, start_date, end_date):
 #     return result
 
 # rsi 평단가 판매 알고리즘
-def rsi_sell_by_avg_price(df, wallet, start_date, end_date):
+def rsi_sell_by_avg_price(df, wallet, surplus_cash, start_date, end_date):
     print("RSI 알고리즘, 판매가중치")
     start_index = get_index_by_date(df, start_date)
     end_index = get_index_by_date(df, end_date)
@@ -222,7 +222,7 @@ def rsi_sell_by_avg_price(df, wallet, start_date, end_date):
     for i in range(start_index, end_index):
         # 40이상이면 사기
         if(df['RSI_14'][i] <40):
-            buy_cnt = get_buy_cnt(df['Open'][i])
+            buy_cnt = get_buy_cnt(df['Open'][i], surplus_cash)
             wallet = wallet - df['Open'][i] * buy_cnt
             capital = get_capital(capital, wallet)
             cnt = cnt + buy_cnt
@@ -237,7 +237,7 @@ def rsi_sell_by_avg_price(df, wallet, start_date, end_date):
     return result
 
 # 스토캐스틱 알고리즘 평단가 판매가중치
-def stochastic_sell_by_avg_price(df, wallet, start_date, end_date):
+def stochastic_sell_by_avg_price(df, wallet, surplus_cash, start_date, end_date):
     print("스토캐스틱 알고리즘, 판매가중치")
     start_index = get_index_by_date(df, start_date)
     end_index = get_index_by_date(df, end_date)
@@ -248,7 +248,7 @@ def stochastic_sell_by_avg_price(df, wallet, start_date, end_date):
     for i in range(start_index, end_index):
         # 20이상이면 사기
         if(df['STOCHk_14_3_3'][i] <=20):
-            buy_cnt = get_buy_cnt(df['Open'][i])
+            buy_cnt = get_buy_cnt(df['Open'][i], surplus_cash)
             wallet = wallet - df['Open'][i] * buy_cnt
             capital = get_capital(capital, wallet)
             cnt = cnt + buy_cnt
@@ -264,7 +264,7 @@ def stochastic_sell_by_avg_price(df, wallet, start_date, end_date):
     return result
 
 # 라오어 알고리즘, 완전히 같지 않고 대략적으로 비슷함
-def laor_algorithm(df, wallet, start_date, end_date):
+def laor_algorithm(df, wallet, surplus_cash, start_date, end_date):
     print("라오어 알고리즘 결과")
     start_index = get_index_by_date(df, start_date)
     end_index = get_index_by_date(df, end_date)

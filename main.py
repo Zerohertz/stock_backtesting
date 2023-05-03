@@ -27,17 +27,20 @@ if __name__ == '__main__':
     wallet = 0
     start_date = '2023-01-03'
     end_date = '2023-05-04'
+
+    # 시작 보유 금액
+    surplus_cash = 200
     # 평단가
     # avg_price = 0
     # period = 190
     print("종목명", stock_code)
     print("최종 결과,", "현재 보유금액,", "현재 가격,", "보유 개수", "자본금")
-    print(day_trade.just_stay(df, wallet, start_date, end_date))
-    print(day_trade.rsi_trade(df, wallet, start_date, end_date))
-    print(day_trade.rsi_sell_by_avg_price(df, wallet, start_date, end_date))
-    print(day_trade.stochastic_trade(df, wallet, start_date, end_date))
-    print(day_trade.stochastic_sell_by_avg_price(df, wallet, start_date, end_date))
-    print(day_trade.laor_algorithm(df, wallet, start_date, end_date))
+    print(day_trade.just_stay(df, wallet, surplus_cash, start_date, end_date))
+    print(day_trade.rsi_trade(df, wallet, surplus_cash, start_date, end_date))
+    print(day_trade.rsi_sell_by_avg_price(df, wallet, surplus_cash, start_date, end_date))
+    print(day_trade.stochastic_trade(df, wallet, surplus_cash, start_date, end_date))
+    print(day_trade.stochastic_sell_by_avg_price(df, wallet, surplus_cash, start_date, end_date))
+    print(day_trade.laor_algorithm(df, wallet, surplus_cash, start_date, end_date))
     # print(day_trade.macd_trade(df, wallet, start_date, end_date))
 
     # 테스트
