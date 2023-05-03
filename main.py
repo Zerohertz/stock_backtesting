@@ -10,9 +10,9 @@ if __name__ == '__main__':
     # 수집할 데이터 정의
     company = "UPRO"
     interval_time = "1d"
-    start_date = '2012-01-03'
-    end_date = '2023-05-04'
-    stock_code = "{0}_{1}_{2}_{3}".format(company, interval_time, start_date, end_date)
+    start_crawl_date = '2012-01-03'
+    end_crawl_date = '2023-05-04'
+    stock_code = "{0}_{1}_{2}_{3}".format(company, interval_time, start_crawl_date, end_crawl_date)
 
     # 데이터 수집
     # crawling.crawl_stock_data(start_date, end_date, company, interval_time="1d")
@@ -25,6 +25,8 @@ if __name__ == '__main__':
 
 
     wallet = 0
+    start_date = '2023-01-03'
+    end_date = '2023-05-04'
     # 평단가
     # avg_price = 0
     # period = 190
