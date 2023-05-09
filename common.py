@@ -27,14 +27,16 @@ def load_csv(stock_code):
 """
 테스트 알고리즘 분기시켜 주는 메소드
 """
-def find_test_case(df, test_case,  wallet, surplus_cash, start_index, end_index):
+def find_test_case(df, test_case,  wallet, surplus_cash, start_index, end_index, rsi_sell_loc=60, rsi_buy_loc=50):
 
     if(test_case == "존버"):
         print("존버 알고리즘")
         day_trade.just_stay(df, wallet, surplus_cash, start_index, end_index)
     elif(test_case == "RSI"):
         print("RSI 알고리즘")
-        day_trade.rsi_trade(df, wallet, surplus_cash, start_index, end_index)
+        print("매도 지표", rsi_sell_loc)
+        print("매수 지표", rsi_buy_loc)
+        day_trade.rsi_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
     elif(test_case == "RSI_평단가매도"):
         print("RSI 알고리즘, 판매가중치")
         day_trade.rsi_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index)

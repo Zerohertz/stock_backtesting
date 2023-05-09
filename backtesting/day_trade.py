@@ -20,11 +20,13 @@ def get_capital(capital, wallet):
 def get_result(wallet, df, cnt, capital, end_index, surplus_cash):
     print()
     print("현재 수익", get_round(wallet + cnt*df['Open'][end_index-1]))
+    print("수익률", get_round((wallet + cnt*df['Open'][end_index-1])/abs(capital))*100,"%")
     print("현재 보유 금액", get_round(wallet))
     print("현재 주식 가격", get_round(df['Open'][end_index-1]))
     print("현재 주식 보유 개수", cnt)
     print("하루 최대 매수 금액(달러)", surplus_cash)
     print("총 투자 필요 금액(달러)", abs(get_round(capital)))
+    print()
 
 # 실현손익
 def get_revenue(tmp_sum_price, sell_price, cnt):
@@ -92,7 +94,7 @@ def stochastic_trade(df, wallet, surplus_cash, start_index, end_index):
 #     return result
 
 # rsi 구매 알고리즘
-def rsi_trade(df, wallet, surplus_cash, start_index, end_index):
+def rsi_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc):
     cnt = 0
     capital = 0
     tmp_sum_price = 0
@@ -103,7 +105,7 @@ def rsi_trade(df, wallet, surplus_cash, start_index, end_index):
     total_sell_cnt = 0
     for i in range(start_index, end_index):
         # 40이하면 사기
-        if(df['RSI_14'][i] < 50):
+        if(df['RSI_14'][i] < rsi_buy_loc):
             # print(df['Date'][i])
             buy_cnt = get_buy_cnt(df['Open'][i], surplus_cash)
             wallet = wallet - df['Open'][i] * buy_cnt
@@ -112,7 +114,7 @@ def rsi_trade(df, wallet, surplus_cash, start_index, end_index):
             total_buy_cnt = total_buy_cnt + 1
             tmp_sum_price = tmp_sum_price + df['Open'][i]
         # 60 이상이면 팔기
-        elif(df['RSI_14'][i] >=60 and cnt >= 1):
+        elif(df['RSI_14'][i] >=rsi_sell_loc and cnt >= 1):
 
             total_sell_cnt = total_sell_cnt + 1
             # 가지고 있는 모든 개수 다팔기

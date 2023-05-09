@@ -34,15 +34,16 @@ if __name__ == '__main__':
     """
     # 현재 재산
     wallet = 0
-    start_date = '2023-01-03'
-    end_date = '2023-05-04'
+    start_date = '2022-01-03'
+    end_date = '2023-04-04'
 
-    # 하루 최대 투자 금액
-    surplus_cash = 200
+    # 하루 최대 투자 금액(달러)
+    surplus_cash = 500
 
     # 어떤 알고리즘으로 테스트할 건지 테스트 케이스 정의
     test_case = "RSI"
 
+    # 반복 주기 테스트 분기기간(일)
     day_period = 180
 
     # 평단가
@@ -51,9 +52,13 @@ if __name__ == '__main__':
     start_index = common.get_index_by_date(df, start_date)
     end_index = common.get_index_by_date(df, end_date)
 
+    rsi_sell_loc = 60
+    rsi_buy_loc = 50
+
     print()
     print("종목", company)
-    common.find_test_case(df, test_case, wallet, surplus_cash, start_index, end_index)
+    print("기간", start_date, "~", end_date)
+    common.find_test_case(df, test_case, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
 
     """
     복합 테스트
