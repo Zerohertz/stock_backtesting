@@ -1,19 +1,25 @@
 import pandas as pd
 from backtesting import day_trade
 from crawling import crawling, technical_analysis
-# from test import test
+from simulation import test
 import common
 
 
 if __name__ == '__main__':
 
-    # 수집할 데이터 정의
+
+    """
+    수집 데이터 정의
+    """
     company = "UPRO"
     interval_time = "1d"
     start_crawl_date = '2012-01-03'
     end_crawl_date = '2023-05-04'
     stock_code = "{0}_{1}_{2}_{3}".format(company, interval_time, start_crawl_date, end_crawl_date)
 
+    """
+    데이터 수집 및 기술적 지표 추가
+    """
     # 데이터 수집
     # crawling.crawl_stock_data(start_date, end_date, company, interval_time="1d")
 
@@ -24,24 +30,35 @@ if __name__ == '__main__':
     df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\ta_data\ta_{}.csv".format(stock_code), sep=",")
 
 
+    """
+    단일 테스트
+    """
+    # 현재 재산
     wallet = 0
     start_date = '2023-01-03'
     end_date = '2023-05-04'
 
-    # 시작 보유 금액
+    # 하루 최대 투자 금액
     surplus_cash = 200
+
+    # 어떤 알고리즘으로 테스트할 건지 테스트 케이스 정의
+    test_case = "RSI"
+
+    day_period = 180
+
     # 평단가
     # avg_price = 0
-    # period = 190
-    print("종목명", stock_code)
-    print("최종 결과,", "현재 보유금액,", "현재 가격,", "보유 개수", "자본금")
-    print(day_trade.just_stay(df, wallet, surplus_cash, start_date, end_date))
-    print(day_trade.rsi_trade(df, wallet, surplus_cash, start_date, end_date))
-    print(day_trade.rsi_sell_by_avg_price(df, wallet, surplus_cash, start_date, end_date))
-    print(day_trade.stochastic_trade(df, wallet, surplus_cash, start_date, end_date))
-    print(day_trade.stochastic_sell_by_avg_price(df, wallet, surplus_cash, start_date, end_date))
-    print(day_trade.laor_algorithm(df, wallet, surplus_cash, start_date, end_date))
-    # print(day_trade.macd_trade(df, wallet, start_date, end_date))
 
-    # 테스트
-    # repeat_period_test(period, file_name)
+    # start_index = common.get_index_by_date(df, start_date)
+    # end_index = common.get_index_by_date(df, end_date)
+
+    # print("종목명", stock_code)
+    # print("하루 최대 매수 금액", surplus_cash)
+    # common.find_test_case("RSI", df, wallet, surplus_cash, start_index, end_index)
+
+    """
+    복합 테스트
+    """
+    test.repeat_period_test(df, day_period, surplus_cash, test_case)
+
+    # test.all_
