@@ -46,15 +46,12 @@ def all_algorithm_test(df, wallet, surplus_cash, start_index, end_index):
 
 # 존버 알고리즘, 수정 필요
 def just_stay(df, wallet, surplus_cash, start_index, end_index):
-    print("존버 알고리즘")
-
     wallet = wallet - df['Open'][start_index]
     wallet = wallet + df['Open'][end_index]
     return [get_round(wallet), get_round(wallet), get_round(df['Open'][end_index]), 0]
 
 # 스토캐스틱 알고리즘
 def stochastic_trade(df, wallet, surplus_cash, start_index, end_index):
-    print("스토캐스틱 알고리즘")
     cnt = 0
     capital = 0
     for i in range(start_index, end_index):
@@ -99,7 +96,6 @@ def stochastic_trade(df, wallet, surplus_cash, start_index, end_index):
 
 # rsi 구매 알고리즘
 def rsi_trade(df, wallet, surplus_cash, start_index, end_index):
-    print("RSI 알고리즘")
     result = []
     cnt = 0
     capital = 0
@@ -134,7 +130,6 @@ def rsi_trade(df, wallet, surplus_cash, start_index, end_index):
 
 # mfi 구매 알고리즘
 def mfi_trade(df, wallet, surplus_cash, start_index, end_index):
-    print("MFI 알고리즘")
     result = []
     cnt = 0
     capital = 0
@@ -158,7 +153,6 @@ def mfi_trade(df, wallet, surplus_cash, start_index, end_index):
 
 # MACD 알고리즘 양수 돌파 매수, 음수 돌파 매도,
 def macd_trade(df, wallet, surplus_cash, start_index, end_index):
-    print("MACD 알고리즘")
     result = []
     cnt = 0
     capital = 0
@@ -204,7 +198,7 @@ def macd_trade(df, wallet, surplus_cash, start_index, end_index):
 
 # rsi 평단가 판매 알고리즘
 def rsi_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index):
-    print("RSI 알고리즘, 판매가중치")
+
     result = []
     cnt = 0
     capital = 0
@@ -228,7 +222,7 @@ def rsi_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index):
 
 # 스토캐스틱 알고리즘 평단가 판매가중치
 def stochastic_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index):
-    print("스토캐스틱 알고리즘, 판매가중치")
+
     result = []
     cnt = 0
     capital = 0
@@ -253,7 +247,7 @@ def stochastic_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_inde
 
 # 라오어 알고리즘, 완전히 같지 않고 대략적으로 비슷함
 def laor_algorithm(df, wallet, surplus_cash, start_index, end_index):
-    print("라오어 알고리즘 결과")
+
     result = []
     cnt = 0
     capital = 0

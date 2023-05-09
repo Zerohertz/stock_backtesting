@@ -27,8 +27,7 @@ if __name__ == '__main__':
     # technical_analysis.add_ta_to_df(stock_code)
 
     # 데이터 로드
-    df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\ta_data\ta_{}.csv".format(stock_code), sep=",")
-
+    df = common.load_csv(stock_code)
 
     """
     단일 테스트
@@ -42,23 +41,22 @@ if __name__ == '__main__':
     surplus_cash = 200
 
     # 어떤 알고리즘으로 테스트할 건지 테스트 케이스 정의
-    test_case = "RSI"
+    test_case = "전체"
 
     day_period = 180
 
     # 평단가
     # avg_price = 0
 
-    # start_index = common.get_index_by_date(df, start_date)
-    # end_index = common.get_index_by_date(df, end_date)
+    start_index = common.get_index_by_date(df, start_date)
+    end_index = common.get_index_by_date(df, end_date)
 
     # print("종목명", stock_code)
     # print("하루 최대 매수 금액", surplus_cash)
-    # common.find_test_case("RSI", df, wallet, surplus_cash, start_index, end_index)
+    common.find_test_case(df, test_case, wallet, surplus_cash, start_index, end_index)
 
     """
     복합 테스트
     """
-    test.repeat_period_test(df, day_period, surplus_cash, test_case)
-
-    # test.all_
+    # test.repeat_period_test(df, test_case, day_period, surplus_cash)
+    # test.all_stocks_all_algorithm_test(surplus_cash, start_index, end_index)
