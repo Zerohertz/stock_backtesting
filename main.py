@@ -41,7 +41,7 @@ if __name__ == '__main__':
     surplus_cash = 200
 
     # 어떤 알고리즘으로 테스트할 건지 테스트 케이스 정의
-    test_case = "전체"
+    test_case = "RSI"
 
     day_period = 180
 
@@ -51,8 +51,8 @@ if __name__ == '__main__':
     start_index = common.get_index_by_date(df, start_date)
     end_index = common.get_index_by_date(df, end_date)
 
-    # print("종목명", stock_code)
-    # print("하루 최대 매수 금액", surplus_cash)
+    print()
+    print("종목", company)
     common.find_test_case(df, test_case, wallet, surplus_cash, start_index, end_index)
 
     """
