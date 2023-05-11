@@ -33,11 +33,12 @@ def all_stocks_all_algorithm_test(surplus_cash, start_index, end_index):
 """
 과거 전체 기간동안 주어진 기간 반복하여 테스트
 """
-def repeat_period_test(df, test_case, day_period, surplus_cash):
+def repeat_period_test(df, test_case, day_period, surplus_cash, rsi_sell_loc, rsi_buy_loc):
     for i in range(0,len(df['Open']), day_period):
         if(i>len(df['Open'])-day_period):
             break
         start_index = i
         end_index = i + day_period
 
-        common.find_test_case(test_case, df, wallet, surplus_cash, start_index, end_index)
+        print(df['Date'][start_index], "~", df['Date'][end_index])
+        common.find_test_case(df, test_case, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
