@@ -38,29 +38,29 @@ def find_test_case(df, test_case,  wallet, surplus_cash, start_index, end_index,
 
     if(test_case == "존버"):
         print("존버 알고리즘")
-        day_trade.just_stay(df, wallet, surplus_cash, start_index, end_index)
+        return day_trade.just_stay(df, wallet, surplus_cash, start_index, end_index)
     elif(test_case == "RSI"):
         print("RSI 알고리즘")
         print("매도 지표", rsi_sell_loc)
         print("매수 지표", rsi_buy_loc)
-        day_trade.rsi_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
+        return day_trade.rsi_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
     elif(test_case == "RSI_가중치_매수"):
-        day_trade.rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
+        return day_trade.rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
     elif(test_case == "RSI_평단가매도"):
         print("RSI 알고리즘, 판매가중치")
-        day_trade.rsi_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index)
+        return day_trade.rsi_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index)
     elif(test_case == "스토캐스틱"):
         print("스토캐스틱 알고리즘")
-        day_trade.stochastic_trade(df, wallet, surplus_cash, start_index, end_index)
+        return day_trade.stochastic_trade(df, wallet, surplus_cash, start_index, end_index)
     elif(test_case == "스토캐스틱_평단가매도"):
         print("스토캐스틱 알고리즘, 판매가중치")
-        day_trade.stochastic_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index)
+        return day_trade.stochastic_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index)
     elif(test_case == "라오어"):
         print("라오어 알고리즘 결과")
-        day_trade.laor_algorithm(df, wallet, surplus_cash, start_index, end_index)
+        return day_trade.laor_algorithm(df, wallet, surplus_cash, start_index, end_index)
     elif(test_case == "MACD"):
         print("MACD 알고리즘")
-        day_trade.macd_trade(df, wallet, start_index, end_index)
+        return day_trade.macd_trade(df, wallet, start_index, end_index)
     elif(test_case == "전체"):
         print("전체 테스트")
-        day_trade.all_algorithm_test(df, wallet, surplus_cash, start_index, end_index)
+        return day_trade.all_algorithm_test(df, wallet, surplus_cash, start_index, end_index)

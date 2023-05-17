@@ -104,6 +104,9 @@ def rsi_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc=60,
     total_buy_cnt = 0
     # 파는 횟수
     total_sell_cnt = 0
+    len_df = len(df['Open'])
+    if(start_index >= len_df or end_index >= len_df):
+        return 0
     for i in range(start_index, end_index):
         # 40이하면 사기
         if(df['RSI_14'][i] < rsi_buy_loc):
