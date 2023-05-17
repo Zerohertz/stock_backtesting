@@ -5,10 +5,9 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import common
 
-def add_ta_to_df(stock_code):
+def add_ta_to_df(stock, start_crawl_date, end_crawl_date, interval_time="1d"):
     # Load data
-    df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\data\{}.csv".format(stock_code), sep=",")
-
+    df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\data\{0}_{1}_{2}_{3}.csv".format(stock, interval_time, start_crawl_date, end_crawl_date), sep=",")
     MyStrategy = ta.Strategy(
         name="rsi",
         description="rsi",
@@ -24,8 +23,10 @@ def add_ta_to_df(stock_code):
     df.ta.strategy(MyStrategy)
 
     # 저장
-    df.to_csv("./ta_data/ta_{0}.csv".format(stock_code), mode = "w")
+    df.to_csv("./ta_data/ta_{0}_{1}_{2}_{3}.csv".format(stock, interval_time, start_crawl_date, end_crawl_date), mode = "w")
 
-def add_ta_to_all_df():
-    for stock in common.stocks:
-        add_ta_to_df(stock)
+def add_ta_to_all_df(start_crawl_date, end_crawl_date, interval_time="1d"):
+
+    all_stocks = common.get_all_stocks()
+    for stock in all_stocks:
+        add_ta_to_df(stock, start_crawl_date, end_crawl_date, interval_time="1d")

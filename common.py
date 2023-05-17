@@ -2,7 +2,7 @@ from backtesting import day_trade
 from simulation import test
 import pandas as pd
 
-def all_stocks():
+def get_all_stocks():
     stocks = ["QQQ", "QLD", "TQQQ", "PSQ", "SQQQ", "DIA", "DDM", "UDOW", "ARKK", "IVV", "SSO", "UPRO", "FNGU", "BULZ"]
     return stocks
 
@@ -37,6 +37,8 @@ def find_test_case(df, test_case,  wallet, surplus_cash, start_index, end_index,
         print("매도 지표", rsi_sell_loc)
         print("매수 지표", rsi_buy_loc)
         day_trade.rsi_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
+    elif(test_case == "RSI_가중치_매수"):
+        day_trade.rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
     elif(test_case == "RSI_평단가매도"):
         print("RSI 알고리즘, 판매가중치")
         day_trade.rsi_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index)

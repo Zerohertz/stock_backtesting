@@ -126,6 +126,46 @@ def rsi_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rs
     # print(total_buy_cnt, total_sell_cnt)
     get_result(wallet, df, cnt, capital, end_index, surplus_cash)
 
+# rsi 구매 알고리즘
+def rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc):
+    cnt = 0
+    capital = 0
+    tmp_sum_price = 0
+
+    # 사는 횟수
+    total_buy_cnt = 0
+    # 파는 횟수
+    total_sell_cnt = 0
+    for i in range(start_index, end_index):
+        # 40이하면 사기
+        if(df['RSI_14'][i] < 50 and df['RSI_14'][i] >= 40):
+            buy_cnt = (get_buy_cnt(df['Open'][i], surplus_cash)//2)
+            wallet = wallet - df['Open'][i] * buy_cnt
+            capital = get_capital(capital, wallet)
+            cnt = cnt + buy_cnt
+            total_buy_cnt = total_buy_cnt + 1
+            tmp_sum_price = tmp_sum_price + df['Open'][i]
+
+        elif(df['RSI_14'][i] < 40):
+            buy_cnt = get_buy_cnt(df['Open'][i], surplus_cash)
+            wallet = wallet - df['Open'][i] * buy_cnt
+            capital = get_capital(capital, wallet)
+            cnt = cnt + buy_cnt
+            total_buy_cnt = total_buy_cnt + 1
+            tmp_sum_price = tmp_sum_price + df['Open'][i]
+
+        # 60 이상이면 팔기
+        elif(df['RSI_14'][i] >=rsi_sell_loc and cnt >= 1):
+
+            total_sell_cnt = total_sell_cnt + 1
+            # 가지고 있는 모든 개수 다팔기
+            wallet = wallet + (df['Open'][i] * cnt)
+            cnt=0
+            tmp_sum_price=0
+    # print("사는 횟수", "파는 횟수")
+    # print(total_buy_cnt, total_sell_cnt)
+    get_result(wallet, df, cnt, capital, end_index, surplus_cash)
+
 # mfi 구매 알고리즘
 def mfi_trade(df, wallet, surplus_cash, start_index, end_index):
     cnt = 0
