@@ -5,7 +5,7 @@ from simulation import test
 import common
 
 """
-복합 종목 테스트
+단일 종목 테스트
 """
 if __name__ == '__main__':
 

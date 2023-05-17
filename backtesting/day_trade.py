@@ -69,6 +69,7 @@ def stochastic_trade(df, wallet, surplus_cash, start_index, end_index):
             wallet = wallet + (df['Open'][i] * cnt)
             cnt=0
     get_result(wallet, df, cnt, capital, end_index, surplus_cash)
+    return get_round(wallet + cnt*df['Open'][end_index-1])
 
 # 인버스 적용한 스토캐스틱 알고리즘 - 일단 보류
 # def inverse_stochastic_trade(df, inverse_df, wallet, start_index, end_index):
@@ -95,11 +96,10 @@ def stochastic_trade(df, wallet, surplus_cash, start_index, end_index):
 #     return result
 
 # rsi 구매 알고리즘
-def rsi_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc):
+def rsi_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc=60, rsi_buy_loc=50):
     cnt = 0
     capital = 0
     tmp_sum_price = 0
-
     # 사는 횟수
     total_buy_cnt = 0
     # 파는 횟수
@@ -125,6 +125,7 @@ def rsi_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rs
     # print("사는 횟수", "파는 횟수")
     # print(total_buy_cnt, total_sell_cnt)
     get_result(wallet, df, cnt, capital, end_index, surplus_cash)
+    return get_round(wallet + cnt*df['Open'][end_index-1])
 
 # rsi 구매 알고리즘
 def rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc):
@@ -165,6 +166,7 @@ def rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_s
     # print("사는 횟수", "파는 횟수")
     # print(total_buy_cnt, total_sell_cnt)
     get_result(wallet, df, cnt, capital, end_index, surplus_cash)
+    return get_round(wallet + cnt*df['Open'][end_index-1])
 
 # mfi 구매 알고리즘
 def mfi_trade(df, wallet, surplus_cash, start_index, end_index):
@@ -186,6 +188,7 @@ def mfi_trade(df, wallet, surplus_cash, start_index, end_index):
             cnt=0
             tmp_sum_price=0
     get_result(wallet, df, cnt, capital, end_index, surplus_cash)
+    return get_round(wallet + cnt*df['Open'][end_index-1])
 
 # MACD 알고리즘 양수 돌파 매수, 음수 돌파 매도,
 def macd_trade(df, wallet, surplus_cash, start_index, end_index):
@@ -207,6 +210,7 @@ def macd_trade(df, wallet, surplus_cash, start_index, end_index):
             cnt=0
             tmp_sum_price=0
     get_result(wallet, df, cnt, capital, end_index, surplus_cash)
+    return get_round(wallet + cnt*df['Open'][end_index-1])
 
 # MACD 3일 변동성 알고리즘- 개선해야함
 # def macd_3_days_trade(df, wallet, start_index, end_index):
@@ -251,6 +255,7 @@ def rsi_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index):
             cnt=0
             tmp_sum_price=0
     get_result(wallet, df, cnt, capital, end_index, surplus_cash)
+    return get_round(wallet + cnt*df['Open'][end_index-1])
 
 # 스토캐스틱 알고리즘 평단가 판매가중치
 def stochastic_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index):
@@ -274,6 +279,7 @@ def stochastic_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_inde
             cnt=0
             tmp_sum_price=0
     get_result(wallet, df, cnt, capital, end_index, surplus_cash)
+    return get_round(wallet + cnt*df['Open'][end_index-1])
 
 
 # 라오어 알고리즘, 완전히 같지 않고 대략적으로 비슷함
@@ -294,3 +300,4 @@ def laor_algorithm(df, wallet, surplus_cash, start_index, end_index):
             cnt=0
             tmp_sum_price=0
     get_result(wallet, df, cnt, capital, end_index, surplus_cash)
+    return get_round(wallet + cnt*df['Open'][end_index-1])

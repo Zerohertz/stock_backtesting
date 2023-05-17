@@ -20,8 +20,15 @@ def get_index_by_date(df, date):
 """
 CSV 데이터 불러오기
 """
-def load_csv(stock_code):
-    df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\ta_data\ta_{}.csv".format(stock_code), sep=",")
+def load_csv(stock, start_crawl_date, end_crawl_date, interval_time="1d"):
+    df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\data\{0}_{1}_{2}_{3}.csv".format(stock, interval_time, start_crawl_date, end_crawl_date), sep=",")
+    return df
+
+"""
+기술적 지표 포함된 csv 불러오기
+"""
+def load_ta_csv(stock, start_crawl_date, end_crawl_date, interval_time="1d"):
+    df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\ta_data\ta_{0}_{1}_{2}_{3}.csv".format(stock, interval_time, start_crawl_date, end_crawl_date), sep=",")
     return df
 
 """

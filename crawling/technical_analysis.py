@@ -7,7 +7,7 @@ import common
 
 def add_ta_to_df(stock, start_crawl_date, end_crawl_date, interval_time="1d"):
     # Load data
-    df = pd.read_csv(r"C:\Users\eunhak\Documents\project\stock_backtesting_platform\data\{0}_{1}_{2}_{3}.csv".format(stock, interval_time, start_crawl_date, end_crawl_date), sep=",")
+    df = common.load_csv(stock)
     MyStrategy = ta.Strategy(
         name="rsi",
         description="rsi",
