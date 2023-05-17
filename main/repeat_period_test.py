@@ -65,5 +65,4 @@ if __name__ == '__main__':
     # """
     # 복합 테스트
     # """
-    # test.repeat_period_test(df, test_case, day_period, surplus_cash, rsi_sell_loc, rsi_buy_loc)
-    # # test.all_stocks_all_algorithm_test(surplus_cash, start_index, end_index)
+    test.repeat_period_test(df, test_case, day_period, surplus_cash, rsi_sell_loc, rsi_buy_loc)
