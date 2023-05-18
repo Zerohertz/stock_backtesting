@@ -22,7 +22,7 @@ if __name__ == '__main__':
     surplus_cash = 500
 
     # 알고리즘, 종목 정하기
-    test_case = "RSI"
+    test_case = "rsi"
     stock = "IVV"
 
     # # # 반복 주기 테스트 분기기간(일), 280이 약 1년
