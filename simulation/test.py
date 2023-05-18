@@ -21,18 +21,17 @@ def all_stocks_all_algorithm_test(surplus_cash, start_crawl_date, end_crawl_date
 
     for i in range(len(stocks)):
         df = common.load_ta_csv(stocks[i], start_crawl_date, end_crawl_date)
-        # print(df)
         start_index = common.get_index_by_date(df, start_date)
         end_index = common.get_index_by_date(df, end_date)
         result_df.loc[i] = [stocks[i],
                             day_trade.just_stay(df, wallet, surplus_cash, start_index, end_index)[0],
-                            day_trade.rsi_trade(df, wallet, surplus_cash, start_index, end_index),
-                            day_trade.rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc=60, rsi_buy_loc=40),
-                            day_trade.rsi_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index),
-                            day_trade.mfi_trade(df, wallet, surplus_cash, start_index, end_index),
-                            day_trade.stochastic_trade(df, wallet, surplus_cash, start_index, end_index),
-                            day_trade.stochastic_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index),
-                            day_trade.laor_algorithm(df, wallet, surplus_cash, start_index, end_index)
+                            day_trade.rsi_trade(df, wallet, surplus_cash, start_index, end_index)[0],
+                            day_trade.rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc=60, rsi_buy_loc=40)[0],
+                            day_trade.rsi_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index)[0],
+                            day_trade.mfi_trade(df, wallet, surplus_cash, start_index, end_index)[0],
+                            day_trade.stochastic_trade(df, wallet, surplus_cash, start_index, end_index)[0],
+                            day_trade.stochastic_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index)[0],
+                            day_trade.laor_algorithm(df, wallet, surplus_cash, start_index, end_index)[0]
                             ]
 
     print(result_df)
@@ -57,7 +56,7 @@ def repeat_period_test(test_case, start_crawl_date, end_crawl_date, day_period, 
 
         for j in range(1, len(stocks)):
             tmp_df = common.load_ta_csv(stocks[j], start_crawl_date, end_crawl_date)
-            tmp.append(common.find_test_case(tmp_df, test_case, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc))
+            tmp.append(common.find_test_case(tmp_df, test_case, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)[0])
 
         result_df.loc[i] = tmp
     print(result_df)
@@ -75,10 +74,18 @@ def win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date
     tmp_win_sum = 0
     tmp_lose_sum = 0
 
+    avg_profit_rate = 0
+    max_profit_rate = 0
+    min_profit_rate = 9999
+
+    sum_profit_rate = 0
+    profit_rate_cnt = 0
+
+    capital_needs = 0
+
     start_index = common.get_index_by_date(df, start_date)
     end_index = common.get_index_by_date(df, end_date)
 
-    print(stock, test_case, win_cnt, lose_cnt)
     for i in range(start_index, end_index):
         if(i>len(df['Open']) - day_period):
             break
@@ -86,28 +93,45 @@ def win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date
         end_index = i + day_period
         result = common.find_test_case(df, test_case, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
 
-        if(result > 0):
+        tmp_profit = result[0]
+        tmp_profit_rate = result[1]
+        tmp_capital_needs = result[2]
+
+        if(tmp_profit > 0):
             win_cnt += 1
-            tmp_win_sum += result
+            tmp_win_sum += tmp_profit
         else:
             lose_cnt+=1
-            tmp_lose_sum += result
-        total_profit += result
-        profits.append(result)
+            tmp_lose_sum += tmp_profit
+        total_profit += tmp_profit
+        profits.append(tmp_profit)
 
+        sum_profit_rate += tmp_profit_rate
+        profit_rate_cnt += 1
 
+        if(tmp_profit_rate > max_profit_rate):
+            max_profit_rate = tmp_profit_rate
+
+        if(tmp_profit_rate < min_profit_rate):
+            min_profit_rate = tmp_profit_rate
+
+        if(tmp_capital_needs > capital_needs):
+            capital_needs = tmp_capital_needs
+
+    avg_profit_rate = round(sum_profit_rate / profit_rate_cnt, 2)
     win_rate = round(((win_cnt) / (win_cnt+lose_cnt) * 100), 2)
     avg_profit = total_profit // (win_cnt+lose_cnt)
-    print()
-    print("현황", profits)
-    print("승률", win_rate, "%")
-    print("평균 총 수익", total_profit // (win_cnt+lose_cnt), "$")
-    print("평균 승리 수익", tmp_win_sum // win_cnt, "$")
-    print("평균 패배 손실", tmp_lose_sum // lose_cnt, "$")
-    print("승수", win_cnt)
-    print("패수", lose_cnt)
+    # print()
+    # print("현황", profits)
+    # print("승률", win_rate, "%")
+    # print("평균 총 수익", avg_profit, "$")
+    # if(win_cnt!=0 and lose_cnt!=0):
+    #     print("평균 승리 수익", tmp_win_sum // win_cnt, "$")
+    #     print("평균 패배 손실", tmp_lose_sum // lose_cnt, "$")
+    # print("승수", win_cnt)
+    # print("패수", lose_cnt)
 
-    return [stock, test_case, win_rate, avg_profit]
+    return [stock, test_case, win_rate, avg_profit, avg_profit_rate, max_profit_rate, min_profit_rate, capital_needs]
 
 
 """
@@ -119,7 +143,7 @@ def win_rate_rank_test(start_crawl_date, end_crawl_date, start_date, end_date, d
     stocks = common.get_all_stocks()
     algorithms = common.get_all_algorithms()
 
-    result_df = pd.DataFrame(columns = ['stock', 'test_case', '승률', '수익'])
+    result_df = pd.DataFrame(columns = ['stock', 'test_case', 'win_rate', 'profit', 'avg_profit_rate', 'max_profit_rate', 'min_profit_rate', 'capital_needs'])
 
     index=0
     for i in range(len(stocks)):
@@ -132,5 +156,5 @@ def win_rate_rank_test(start_crawl_date, end_crawl_date, start_date, end_date, d
             result_df.loc[index] = tmp
             index += 1
 
-    result_df = result_df.sort_values(by = ['승률'], ascending=False)
+    result_df = result_df.sort_values(by = ['win_rate'], ascending=False)
     return result_df
