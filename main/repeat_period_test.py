@@ -12,25 +12,8 @@ import common
 """
 if __name__ == '__main__':
 
-    """
-    수집 데이터 정의
-    """
-    interval_time = "1d"
     start_crawl_date = '2012-01-03'
     end_crawl_date = '2023-05-15'
-
-    """
-    데이터 수집 및 기술적 지표 추가
-    """
-    # 데이터 수집
-    # crawling.crawl_all_stock_data(start_crawl_date, end_crawl_date, interval_time="1d")
-
-    # 통계적 지표 추가
-    # technical_analysis.add_ta_to_all_df(start_crawl_date, end_crawl_date, interval_time="1d")
-
-    # 데이터 로드
-    # df = common.load_csv(stock_code)
-
 
     # # 하루 최대 투자 금액(달러)
     surplus_cash = 500
