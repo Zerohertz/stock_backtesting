@@ -26,7 +26,7 @@ if __name__ == '__main__':
     stock = "UPRO"
 
     # # # 반복 주기 테스트 분기기간(일), 280이 약 1년
-    day_period = 500
+    day_period = 270
 
     rsi_sell_loc = 60
     rsi_buy_loc = 50

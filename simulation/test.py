@@ -71,12 +71,14 @@ def win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date
     total_profit = 0
     win_cnt = 0
     lose_cnt = 0
+    tmp_win_sum = 0
+    tmp_lose_sum = 0
 
     start_index = common.get_index_by_date(df, start_date)
     end_index = common.get_index_by_date(df, end_date)
 
     for i in range(start_index, end_index):
-        if(i>len(df['Open'])):
+        if(i>len(df['Open']) - day_period):
             break
         start_index = i
         end_index = i + day_period
@@ -84,14 +86,18 @@ def win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date
 
         if(result >= 0):
             win_cnt += 1
+            tmp_win_sum += result
         else:
             lose_cnt+=1
+            tmp_lose_sum += result
         total_profit += result
         profits.append(result)
 
     print()
     print("현황", profits)
-    print("평균 수익", total_profit // (win_cnt+lose_cnt), "$")
     print("승률", round(((win_cnt) / (win_cnt+lose_cnt) * 100), 2), "%")
+    print("평균 총 수익", total_profit // (win_cnt+lose_cnt), "$")
+    print("평균 승리 수익", tmp_win_sum // win_cnt, "$")
+    print("평균 패배 손실", tmp_lose_sum // lose_cnt, "$")
     print("승수", win_cnt)
     print("패수", lose_cnt)
