@@ -91,6 +91,7 @@ def win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date
 
     print()
     print("현황", profits)
-    print("총 수익", total_profit)
+    print("평균 수익", total_profit // (win_cnt+lose_cnt), "$")
+    print("승률", round(((win_cnt) / (win_cnt+lose_cnt) * 100), 2), "%")
     print("승수", win_cnt)
     print("패수", lose_cnt)
