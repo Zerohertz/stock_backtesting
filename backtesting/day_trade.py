@@ -18,16 +18,17 @@ def get_capital(capital, wallet):
     return min(capital, wallet)
 
 def get_result(wallet, df, cnt, capital, end_index, surplus_cash):
-    print()
-    print("현재 수익", get_round(wallet + cnt*df['Open'][end_index-1]))
-    # 완전 정확한 수익률 공식은 아님, 총투자필요금액에서 현재 수익을 나눈 것이기 때문
-    print("수익률", get_round((wallet + cnt*df['Open'][end_index-1])/abs(capital))*100,"%")
-    print("현재 보유 금액", get_round(wallet))
-    print("현재 주식 가격", get_round(df['Open'][end_index-1]))
-    print("현재 주식 보유 개수", cnt)
-    print("하루 최대 매수 금액(달러)", surplus_cash)
-    print("총 투자 필요 금액(달러)", abs(get_round(capital)))
-    print()
+    pass
+    # print()
+    # print("현재 수익", get_round(wallet + cnt*df['Open'][end_index-1]))
+    # # 완전 정확한 수익률 공식은 아님, 총투자필요금액에서 현재 수익을 나눈 것이기 때문
+    # print("수익률", get_round((wallet + cnt*df['Open'][end_index-1])/abs(capital))*100,"%")
+    # print("현재 보유 금액", get_round(wallet))
+    # print("현재 주식 가격", get_round(df['Open'][end_index-1]))
+    # print("현재 주식 보유 개수", cnt)
+    # print("하루 최대 매수 금액(달러)", surplus_cash)
+    # print("총 투자 필요 금액(달러)", abs(get_round(capital)))
+    # print()
 
 # 실현손익
 def get_revenue(tmp_sum_price, sell_price, cnt):
