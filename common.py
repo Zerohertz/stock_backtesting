@@ -3,7 +3,7 @@ from simulation import test
 import pandas as pd
 
 def get_all_stocks():
-    stocks = ["QQQ", "QLD", "TQQQ", "PSQ", "SQQQ", "DIA", "DDM", "UDOW", "ARKK", "IVV", "SSO", "UPRO", "FNGU", "BULZ"]
+    stocks = ["QQQ", "QLD", "TQQQ", "PSQ", "SQQQ", "DIA", "DDM", "UDOW", "IVV", "SSO", "UPRO"]
     return stocks
 
 """
