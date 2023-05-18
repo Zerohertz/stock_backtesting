@@ -16,7 +16,7 @@ avg_price = 0
 """
 def all_stocks_all_algorithm_test(surplus_cash, start_crawl_date, end_crawl_date, start_date, end_date):
     stocks = common.get_all_stocks()
-    result_df = pd.DataFrame(columns=['stock', 'just_stay', 'rsi', 'rsi_sell_by_avg', 'mfi', 'stochastic', 'stochastic_sell_by_avg', 'laor'])
+    result_df = pd.DataFrame(columns=['stock', 'just_stay', 'rsi', 'rsi_buy_weight_trade',  'rsi_sell_by_avg', 'mfi', 'stochastic', 'stochastic_sell_by_avg', 'laor'])
 
     for i in range(len(stocks)):
         df = common.load_ta_csv(stocks[i], start_crawl_date, end_crawl_date)
@@ -26,6 +26,7 @@ def all_stocks_all_algorithm_test(surplus_cash, start_crawl_date, end_crawl_date
         result_df.loc[i] = [stocks[i],
                             day_trade.just_stay(df, wallet, surplus_cash, start_index, end_index)[0],
                             day_trade.rsi_trade(df, wallet, surplus_cash, start_index, end_index),
+                            day_trade.rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc=60, rsi_buy_loc=40),
                             day_trade.rsi_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index),
                             day_trade.mfi_trade(df, wallet, surplus_cash, start_index, end_index),
                             day_trade.stochastic_trade(df, wallet, surplus_cash, start_index, end_index),
@@ -47,7 +48,7 @@ def repeat_period_test(test_case, start_crawl_date, end_crawl_date, day_period, 
     result_df = pd.DataFrame(columns = stocks)
 
     for i in range(0, len(df['Open']), day_period):
-        if(i>len(df['Open'])-day_period):
+        if(i>len(df['Open'])):
             break
         start_index = i
         end_index = i + day_period
@@ -59,3 +60,37 @@ def repeat_period_test(test_case, start_crawl_date, end_crawl_date, day_period, 
 
         result_df.loc[i] = tmp
     print(result_df)
+
+"""
+과거 전체 기간동안 매일 계산하며 승률 테스트
+"""
+def win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date, end_date, day_period, surplus_cash, rsi_sell_loc, rsi_buy_loc):
+
+    df = common.load_ta_csv(stock, start_crawl_date, end_crawl_date)
+    profits = []
+    total_profit = 0
+    win_cnt = 0
+    lose_cnt = 0
+
+    start_index = common.get_index_by_date(df, start_date)
+    end_index = common.get_index_by_date(df, end_date)
+
+    for i in range(start_index, end_index):
+        if(i>len(df['Open'])):
+            break
+        start_index = i
+        end_index = i + day_period
+        result = common.find_test_case(df, test_case, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
+
+        if(result >= 0):
+            win_cnt += 1
+        else:
+            lose_cnt+=1
+        total_profit += result
+        profits.append(result)
+
+    print()
+    print("현황", profits)
+    print("총 수익", total_profit)
+    print("승수", win_cnt)
+    print("패수", lose_cnt)
