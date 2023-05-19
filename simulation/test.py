@@ -125,11 +125,13 @@ def win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date
     # print("현황", profits)
     # print("승률", win_rate, "%")
     # print("평균 총 수익", avg_profit, "$")
+    # print("평균 수익률", avg_profit_rate, "%")
     # if(win_cnt!=0 and lose_cnt!=0):
     #     print("평균 승리 수익", tmp_win_sum // win_cnt, "$")
     #     print("평균 패배 손실", tmp_lose_sum // lose_cnt, "$")
     # print("승수", win_cnt)
     # print("패수", lose_cnt)
+    # print("총 투자 필요 금액", capital_needs)
 
     return [stock, test_case, win_rate, avg_profit, avg_profit_rate, max_profit_rate, min_profit_rate, capital_needs]
 
