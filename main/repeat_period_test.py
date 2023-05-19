@@ -19,12 +19,12 @@ if __name__ == '__main__':
     surplus_cash = 500
 
     # # 어떤 알고리즘으로 테스트할 건지 테스트 케이스 정의
-    test_case = "RSI"
+    test_case = "rsi"
 
     # # # 반복 주기 테스트 분기기간(일), 280이 약 1년
-    day_period = 180
+    day_period = 280
 
-    rsi_sell_loc = 60
-    rsi_buy_loc = 50
+    rsi_sell_loc = 72
+    rsi_buy_loc = 49
 
     test.repeat_period_test(test_case, start_crawl_date, end_crawl_date, day_period, surplus_cash, rsi_sell_loc, rsi_buy_loc)
