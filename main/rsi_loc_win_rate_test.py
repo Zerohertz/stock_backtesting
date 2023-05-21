@@ -15,7 +15,7 @@ if __name__ == '__main__':
     start_crawl_date = '2012-01-03'
     end_crawl_date = '2023-05-15'
 
-    start_date = '2017-01-03'
+    start_date = '2015-01-05'
     end_date = '2023-05-15'
 
     # 하루 최대 투자 금액(달러)
@@ -26,12 +26,14 @@ if __name__ == '__main__':
     stock = "UPRO"
 
     # 반복 주기 테스트 분기기간(일), 280이 약 1년
-    day_period = 400
+    day_period = 280
 
     result_df = pd.DataFrame(columns = ['rsi_sell_loc', 'rsi_buy_loc', 'win_rate', 'profit', 'avg_profit_rate', 'max_profit_rate', 'min_profit_rate', 'capital_needs'])
 
+    start = 60
+    end = 75
     index = 0
-    for rsi_sell_loc in range(60, 75):
+    for rsi_sell_loc in range(start, end):
         for rsi_buy_loc in range(45, 60):
             print(rsi_sell_loc, rsi_buy_loc)
             tmp_result = test.win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date, end_date, day_period, surplus_cash, rsi_sell_loc, rsi_buy_loc)
@@ -44,4 +46,4 @@ if __name__ == '__main__':
             # [stock, test_case, win_rate, avg_profit, avg_profit_rate, max_profit_rate, min_profit_rate, capital_needs]
 
     result_df = result_df.sort_values(by = ['win_rate'], ascending=False)
-    result_df.to_csv("result_data/rsi_test_data/{0}_{1}_{2}_{3}_{4}.csv".format(start_date, end_date, stock, test_case, day_period), encoding="utf8")
+    result_df.to_csv("result_data/rsi_loc_win_rate_test_result/{0}_{1}_{2}_{3}_{4}_{5}_{6}.csv".format(start_date, end_date, stock, test_case, day_period, start, end), encoding="utf8")
