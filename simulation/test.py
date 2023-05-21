@@ -64,7 +64,7 @@ def repeat_period_test(test_case, start_crawl_date, end_crawl_date, day_period, 
 """
 과거 전체 기간동안 전체 알고리즘, 전체 종목에 대하여 기간별로 계산하며 승률 테스트
 """
-def win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date, end_date, day_period, surplus_cash, rsi_sell_loc, rsi_buy_loc):
+def win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date, end_date, day_period, surplus_cash, rsi_sell_loc, rsi_buy_loc, rsi_first_buy_loc=50):
 
     df = common.load_ta_csv(stock, start_crawl_date, end_crawl_date)
     profits = []
@@ -91,7 +91,7 @@ def win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date
             break
         start_index = i
         end_index = i + day_period
-        result = common.find_test_case(df, test_case, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
+        result = common.find_test_case(df, test_case, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc, rsi_first_buy_loc)
 
         tmp_profit = result[0]
         tmp_profit_rate = result[1]
@@ -118,9 +118,14 @@ def win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date
         if(tmp_capital_needs > capital_needs):
             capital_needs = tmp_capital_needs
 
-    avg_profit_rate = round(sum_profit_rate / profit_rate_cnt, 2)
-    win_rate = round(((win_cnt) / (win_cnt+lose_cnt) * 100), 2)
-    avg_profit = total_profit // (win_cnt+lose_cnt)
+    if(profit_rate_cnt!=0 and (win_cnt+lose_cnt)!=0):
+        avg_profit_rate = round(sum_profit_rate / profit_rate_cnt, 2)
+        win_rate = round(((win_cnt) / (win_cnt+lose_cnt) * 100), 2)
+        avg_profit = total_profit // (win_cnt+lose_cnt)
+    else:
+        avg_profit_rate = 0
+        win_rate = 0
+        avg_profit = 0
     # print()
     # print("현황", profits)
     # print("승률", win_rate, "%")
@@ -139,7 +144,7 @@ def win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date
 """
 과거 전체 기간동안 매일 계산하며 승률 테스트
 """
-def win_rate_rank_test(start_crawl_date, end_crawl_date, start_date, end_date, day_period, surplus_cash, rsi_sell_loc, rsi_buy_loc):
+def win_rate_rank_test(start_crawl_date, end_crawl_date, start_date, end_date, day_period, surplus_cash, rsi_sell_loc, rsi_buy_loc, rsi_first_buy_loc):
 
     # 주식과 알고리즘
     stocks = common.get_all_stocks()
@@ -153,7 +158,7 @@ def win_rate_rank_test(start_crawl_date, end_crawl_date, start_date, end_date, d
 
             stock = stocks[i]
             test_case = algorithms[j]
-            tmp = win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date, end_date, day_period, surplus_cash, rsi_sell_loc, rsi_buy_loc)
+            tmp = win_rate_test(stock, test_case, start_crawl_date, end_crawl_date, start_date, end_date, day_period, surplus_cash, rsi_sell_loc, rsi_buy_loc, rsi_first_buy_loc)
 
             result_df.loc[index] = tmp
             index += 1
