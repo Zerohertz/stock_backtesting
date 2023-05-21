@@ -3,7 +3,7 @@ from simulation import test
 import pandas as pd
 
 def get_all_stocks():
-    stocks = ["QQQ", "QLD", "TQQQ", "PSQ", "SQQQ", "DIA", "DDM", "UDOW", "IVV", "SSO", "UPRO"]
+    stocks = ["QQQ", "QLD", "TQQQ", "DIA", "DDM", "UDOW", "IVV", "SSO", "UPRO"]
     return stocks
 
 def get_all_algorithms():
@@ -39,7 +39,7 @@ def load_ta_csv(stock, start_crawl_date, end_crawl_date, interval_time="1d"):
 """
 테스트 알고리즘 분기시켜 주는 메소드, MFI 추가해야함
 """
-def find_test_case(df, test_case,  wallet, surplus_cash, start_index, end_index, rsi_sell_loc=60, rsi_buy_loc=50):
+def find_test_case(df, test_case,  wallet, surplus_cash, start_index, end_index, rsi_sell_loc=60, rsi_buy_loc=50, rsi_first_buy_loc=50):
 
     if(test_case == "just_stay"):
         # print("존버 알고리즘")
@@ -50,7 +50,7 @@ def find_test_case(df, test_case,  wallet, surplus_cash, start_index, end_index,
         # print("매수 지표", rsi_buy_loc)
         return day_trade.rsi_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
     elif(test_case == "rsi_buy_weight_trade"):
-        return day_trade.rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc)
+        return day_trade.rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc, rsi_first_buy_loc)
     elif(test_case == "rsi_sell_by_avg"):
         # print("RSI 알고리즘, 판매가중치")
         return day_trade.rsi_sell_by_avg_price(df, wallet, surplus_cash, start_index, end_index)
