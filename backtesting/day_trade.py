@@ -138,7 +138,7 @@ def rsi_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc=60,
     return get_result(wallet, df, cnt, capital, end_index, surplus_cash)
 
 # rsi 구매 알고리즘
-def rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc):
+def rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_sell_loc, rsi_buy_loc, rsi_first_buy_loc):
     cnt = 0
     capital = 0
     tmp_sum_price = 0
@@ -152,7 +152,7 @@ def rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_s
         return [0,0,0]
     for i in range(start_index, end_index):
         # 40이하면 사기
-        if(df['RSI_14'][i] < 50 and df['RSI_14'][i] >= 40):
+        if(df['RSI_14'][i] < rsi_first_buy_loc and df['RSI_14'][i] >= rsi_buy_loc):
             buy_cnt = (get_buy_cnt(df['Open'][i], surplus_cash)//2)
             wallet = wallet - df['Open'][i] * buy_cnt
             capital = get_capital(capital, wallet)
@@ -160,7 +160,7 @@ def rsi_buy_weight_trade(df, wallet, surplus_cash, start_index, end_index, rsi_s
             total_buy_cnt = total_buy_cnt + 1
             tmp_sum_price = tmp_sum_price + df['Open'][i]
 
-        elif(df['RSI_14'][i] < 40):
+        elif(df['RSI_14'][i] < rsi_buy_loc):
             buy_cnt = get_buy_cnt(df['Open'][i], surplus_cash)
             wallet = wallet - df['Open'][i] * buy_cnt
             capital = get_capital(capital, wallet)
